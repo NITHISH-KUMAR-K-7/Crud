@@ -20,7 +20,19 @@ function AddUser() {
     const navigate = useNavigate()
     const handleSubmit = (e)=>{
         e.preventDefault()
-        axios.post("http://localhost:5000/createuser",  inputs )
+
+        const trimmedInputs = {
+          name: inputs.name.trim(),
+          email: inputs.email.trim(),
+          age: inputs.age.trim(),
+        };
+
+        // 🔥 Validation
+        if (!trimmedInputs.name || !trimmedInputs.email || !trimmedInputs.age) {
+          alert("All fields are required!");
+          return;
+        }
+        axios.post("http://localhost:5000/users",  inputs )
           .then((res) => {console.log(res)
             navigate('/')
           })
@@ -41,7 +53,7 @@ function AddUser() {
                 Name
               </label>
               <input
-                className="outline-none w-full py-2 border-b-1  border-transparent hover:border-gray-600  transition-all duration-300"
+                className="outline-none w-full py-2 border-b  border-transparent hover:border-gray-600  transition-all duration-300"
                 type="text"
                 placeholder="Enter Name"
                 name="name"
@@ -56,7 +68,7 @@ function AddUser() {
                 Email
               </label>
               <input
-                className="outline-none w-full py-2 border-b-1  border-transparent hover:border-gray-600  transition-all duration-300"
+                className="outline-none w-full py-2 border-b  border-transparent hover:border-gray-600  transition-all duration-300"
                 type="text"
                 placeholder="Enter Email"
                 name="email"

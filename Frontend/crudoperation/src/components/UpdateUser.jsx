@@ -14,11 +14,16 @@ function UpdateUser() {
         })
 
         useEffect(() => {
-          axios
-            .get("http://localhost:5000/getuser/"+id)
-            .then((res) => {SetInputs(res.data)})
-            .catch((err) => console.log(err));
-        }, []);
+          const fetchuser = async ()=>{
+            try{
+              const res = await axios.get("http://localhost:5000/users/"+id)
+              SetInputs(res.data)
+            }catch(error){
+              console.log(error)
+            }
+          }
+          fetchuser();
+        }, [id]);
     
         const handleChange = (e)=>{
             SetInputs({
@@ -27,17 +32,34 @@ function UpdateUser() {
             });
         }
     
-        const handleSubmit = (e)=>{
+        const handleSubmit = async(e)=>{
             e.preventDefault();
-            axios
-              .put("http://localhost:5000/updateuser/"+id, inputs)
-              .then((res) => {
-                console.log(res);
-                navigate("/");
-              })
-              .catch((err) => console.log(err));
-            
-    
+
+            //trim 
+            const trimmedInputs = {
+              name: inputs.name.trim(),
+              email: inputs.email.trim(),
+              age: inputs.age.trim(),
+            };
+
+            // 🔥 Validation
+            if (
+              !trimmedInputs.name ||
+              !trimmedInputs.email ||
+              !trimmedInputs.age
+            ) {
+              alert("All fields are required!");
+              return;
+            }
+            try{
+              await axios.put(
+                "http://localhost:5000/users/" + id,
+                trimmedInputs,
+              );
+              navigate('/')
+            }catch(error){
+              console.log(error)
+            }
         }
     
   return (

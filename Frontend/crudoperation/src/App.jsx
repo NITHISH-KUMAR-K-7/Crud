@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import Home from './components/Home'
-import AddUser from './components/AddUser'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import UpdateUser from './components/UpdateUser'
+import { useState } from "react";
+import Home from "./components/Home";
+import AddUser from "./components/AddUser";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UpdateUser from "./components/UpdateUser";
 
 function App() {
- 
   return (
     <>
       <BrowserRouter>
@@ -15,12 +14,8 @@ function App() {
           <Route path="/updateuser/:id" element={<UpdateUser />}></Route>
         </Routes>
       </BrowserRouter>
-
-      
     </>
   );
 }
 
-export default App
-
-
+export default App;

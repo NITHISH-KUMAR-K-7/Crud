@@ -2,26 +2,29 @@ import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
 import axios from'axios'
 
+
 function Home() {
 
     const [users, SetUsers] = useState([]);
 
     useEffect(()=>{
-        axios
-          .get("http://localhost:5000/getuser")
-          .then((res) => SetUsers(res.data))
-          .catch((err) => console.log(err));
+      const fetchusers = async()=>{
+        try{
+          const res = await axios.get(`http://localhost:5000/users`)
+          SetUsers(res.data)
+
+        }catch(error){
+          console.log(error)
+        }
+      }
+  
+          fetchusers();
     },[])
 
-    const handleDelete = (id)=>{
-        axios
-          .delete("http://localhost:5000/deleteuser/" + id)
-          .then((res) => {console.log(res.data)
-            SetUsers(users.filter((user)=>{
-              return user._id !== id
-            }))
-          })
-          .catch((err) => console.log(err));
+    const handleDelete = async (id)=>{
+     const res = await axios.delete(`http://localhost:5000/users/${id}`)
+     SetUsers(users.filter(user => user._id !== id))
+
     }
 
   return (
